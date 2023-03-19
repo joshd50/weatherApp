@@ -1,0 +1,22 @@
+:root {
+    --background: rgb(46, 45, 45);
+    --offwhite: rgb(245, 239, 229);
+}
+
+body {
+    background-color: var(--background);
+    width: 100vw;
+    height: 100vh;
+}
+
+span {
+    color: var(--offwhite);
+}
+
+.click-tab {
+    height: 85vh;
+}
+
+.nvh {
+    height: 10vh;
+}
