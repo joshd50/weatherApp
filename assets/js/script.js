@@ -47,12 +47,13 @@ function onPlaceChanged () {
 
         }
         if (country == "United States") {
-            country = ", USA";
-            state = ", " + state;
+            country = "USA";
+            state = ", " + state + ", ";
             name = name.trim();
         } else {
-            state = ","
+            state = ", "
             name = name.trim()
+            country = " " + country
         }
         console.log(lat, lng);
         // 34.0522342 -118.2436849
@@ -91,7 +92,7 @@ function renderCityList(){
 
 
             var newCity = $('<li>');
-            newCity.text(city.location.name + city.location.state + city.location.country);
+            newCity.text(city.location.name + city.location.state + ' ' + city.location.country);
             newCity.data("lat", city.geometry.lat);
             newCity.data("lng", city.geometry.lng);
             newCity.addClass("ui-widget-content")
@@ -100,6 +101,19 @@ function renderCityList(){
             closeButton.attr("type", "button");
             closeButton.addClass ('btn-close btn-close-white')
             closeButton.attr('aria-label', "Close" )
+
+            // add event listener to the close button
+            closeButton.click(function(event) {
+                var index = $(this).parent().index();
+                // remove the city from the cities array
+                cities.splice(index, 1);
+
+                // save the updated cities array in local storage
+                localStorage.setItem('cities', JSON.stringify(cities));
+
+                // re-render the city list
+                renderCityList();
+            });
 
             newCity.append(closeButton)
             $('#selectable').append(newCity)

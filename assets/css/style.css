@@ -64,14 +64,15 @@ span {
       background-color: ;
   }
 
-  #selectable li {
-      margin: 10px;
-      padding-left: 10px;
-      font-size: 1.4em;
-      height: 40px;
+#selectable li {
+    margin: 10px;
+    padding-left: 10px;
+    font-size: 1.4em;
     display: flex;
     align-items: center;
     background-color: black;
-    justify-content: space-between;
     color: var(--offwhite);
-  }
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
