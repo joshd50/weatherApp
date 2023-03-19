@@ -86,3 +86,13 @@ span {
 #current-temp {
     font-size: 50px;
 }
+
+#hourly-forecast {
+    border: 1px solid var(--offwhite);
+    height: 100px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    overflow-x: auto;
+
+}

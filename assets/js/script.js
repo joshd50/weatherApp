@@ -164,6 +164,21 @@ function appendWeather(data) {
 
     var condition = $('#condition')
     condition.text(data.current.condition.text)
+
+    var currentTime = $('#current-time')
+    currentTime.text(dayjs(data.location.localtime).format('h:mm a'))
+
+    var currentHour = dayjs(data.location.localtime).format('H')
+    var hoursLeft = 24 - currentHour
+    var hourTom = currentHour
+    console.log(hoursLeft + "tom" + hourTom)
+
+    console.log(data.forecast.forecastday[0].hour[currentHour].temp_f)
+
+for (var i = currentHour; i < hoursLeft; i++) {
+    var todayHourData = data.forecast.forecastday[0].hour[i].temp_f;
+    console.log(todayHourData);
+}
 }
 
 renderCityList()

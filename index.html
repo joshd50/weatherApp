@@ -29,19 +29,7 @@
     <div class="row m-4">
         <div class="col-3">
             <input type="text" class="form-control" id="autocomplete" placeholder="Enter a city" />
-            <ol id="selectable">
-                <li class="ui-widget-content">Item 1
-                    <button type="button" class="btn-close btn-close-white" aria-label="Close"></button>
-                </li>
-                <li class="ui-widget-content">Item 2
-                    <button type="button" class="btn-close btn-close-white" aria-label="Close"></button>
-                </li>
-                <li class="ui-widget-content">Item 3</li>
-                <li class="ui-widget-content">Item 4</li>
-                <li class="ui-widget-content">Item 5</li>
-                <li class="ui-widget-content">Item 6</li>
-                <li class="ui-widget-content">Item 7</li>
-            </ol>
+            <ol id="selectable"></ol>
         </div>
         <div class="card bg-dark text-white col-9 click-tab">
             <!-- <img src="..." class="card-img" alt="..."> -->
@@ -49,6 +37,8 @@
                 <h3 class="card-title" id="city-name"></h3>
                 <p class="card-text" id="current-temp"></p>
                 <p class="card-text" id="condition"></p>
+                <p class="card-text" id="current-time"></p>
+                <div class="container-fluid" id="hourly-forecast"></div>
             </div>
         </div>
     </div>
@@ -58,6 +48,8 @@
         crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js"
+        integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U=" crossorigin="anonymous"></script>
 </body>
 
 </html>
