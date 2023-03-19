@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
   } );
 
 let autocomplete;
-
+let cities = []
 
 function initAutocomplete() {
     autocomplete = new google.maps.places.Autocomplete(
@@ -58,30 +58,87 @@ function onPlaceChanged () {
         // 34.0522342 -118.2436849
         console.log(name, state, country);
 
-        newCity = $('<li>');
-        newCity.text(name + state + country);
-        newCity.data("lat", lat);
-        newCity.data("lng", lng);
-        newCity.addClass("ui-widget-content")
+        var city = {
+            location: {
+                name: name,
+                state: state,
+                country: country
+            },
+            geometry: {
+                lat: lat,
+                lng: lng
+            }
+        };
+        // add the city object to the cities array
+        cities.push(city);
 
-        closeButton = $('<button>')
-        closeButton.attr("type", "button");
-        closeButton.addClass ('btn-close btn-close-white')
-        closeButton.attr('aria-label', "Close" )
+        // save the cities array in local storage
+        localStorage.setItem('cities', JSON.stringify(cities));
+        renderCityList();
+    }
+}
+function renderCityList(){
+    // clear the existing list
+    $('#selectable').empty();
 
-        newCity.append(closeButton)
-        $('#selectable').append(newCity)
+    // retrieve the cities array from local storage
+    cities = JSON.parse(localStorage.getItem('cities')) || [];
+        if (cities !== null) {
+            console.log(cities.length)
+        // loop through the cities array and create an li for each city
+        for (var i = 0; i < cities.length; i++) {
+            var city = cities[i];
 
-        // clear input
-        document.getElementById('autocomplete').value = '';
 
-        getWeather(lat,lng);
+            var newCity = $('<li>');
+            newCity.text(city.location.name + city.location.state + city.location.country);
+            newCity.data("lat", city.geometry.lat);
+            newCity.data("lng", city.geometry.lng);
+            newCity.addClass("ui-widget-content")
+
+            closeButton = $('<button>')
+            closeButton.attr("type", "button");
+            closeButton.addClass ('btn-close btn-close-white')
+            closeButton.attr('aria-label', "Close" )
+
+            newCity.append(closeButton)
+            $('#selectable').append(newCity)
+
+            // clear input
+            document.getElementById('autocomplete').value = '';
+
+            getWeather(city.geometry.lat,city.geometry.lng);
+        }
+        
     }
 }
 
 function getWeather(lat, lng){
-    var requestCurrent = 'http://api.weatherapi.com/v1/current.json?key=b53d7b780ee34c219e6164023231903'
-    var requestForecast = 'http://api.weatherapi.com/v1//forecast.json?key=b53d7b780ee34c219e6164023231903'
+    var requestForecast = 'http://api.weatherapi.com/v1/forecast.json?key=b53d7b780ee34c219e6164023231903'
+    var geometry = '&q=' + lat + ',' + lng
+    var requestUrl = requestForecast + geometry;
 
-
+    // send a fetch request to get the forecast weather data
+    fetch(requestUrl)
+        .then(function(response) {
+            if (!response.ok) {
+                throw new Error('Failed to get forecast weather data.');
+            }
+            return response.json();
+        })
+        .then(function(data) {
+            // handle the response data
+            console.log(data);
+        })
+        .catch(function(error) {
+            console.log('Error: ' + error.message);
+        })
+        .finally(function() {
+            // re-render the city list after the weather data has been retrieved
+            // renderCityList();
+        });
 }
+
+
+renderCityList()
+
