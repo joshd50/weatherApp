@@ -1,6 +1,7 @@
 :root {
     --background: rgb(46, 45, 45);
     --offwhite: rgb(245, 239, 229);
+    --secondary: rgb(159, 142, 113);
 }
 
 body {
@@ -20,3 +21,57 @@ span {
 .nvh {
     height: 10vh;
 }
+
+#autocomplete {
+    background-color: black;
+    color: var(--offwhite);
+}
+/* Change the dropdown background color */
+.pac-container {
+    background-color: var(--background);
+}
+
+
+/* Change the matched text color */
+.pac-item-query {
+    font-weight: bold;
+    color: var(--secondary);
+}
+
+/* Change the dropdown item hover background color */
+.pac-item:hover {
+    background-color: rgb(80, 60, 60);
+}
+
+  #feedback {
+      font-size: 1.4em;
+  }
+
+  #selectable .ui-selecting {
+      background: #FECA40;
+  }
+
+  #selectable .ui-selected {
+      background: var(--secondary);
+      color: white;
+  }
+
+  #selectable {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      background-color: ;
+  }
+
+  #selectable li {
+      margin: 10px;
+      padding-left: 10px;
+      font-size: 1.4em;
+      height: 40px;
+    display: flex;
+    align-items: center;
+    background-color: black;
+    justify-content: space-between;
+    color: var(--offwhite);
+  }
