@@ -93,9 +93,9 @@ function renderCityList(){
 
             var newCity = $('<li>');
             newCity.text(city.location.name + city.location.state + ' ' + city.location.country);
-            newCity.data("lat", city.geometry.lat);
+            newCity.attr("data-lat", city.geometry.lat);
             newCity.data("lng", city.geometry.lng);
-            newCity.addClass("ui-widget-content")
+            newCity.attr("data-lng", city.geometry.lng);
 
             closeButton = $('<button>')
             closeButton.attr("type", "button");
@@ -121,14 +121,14 @@ function renderCityList(){
             // clear input
             document.getElementById('autocomplete').value = '';
 
-            getWeather(city.geometry.lat,city.geometry.lng);
+            // getWeather(city.geometry.lat,city.geometry.lng);
         }
         
     }
 }
 
 function getWeather(lat, lng){
-    var requestForecast = 'http://api.weatherapi.com/v1/forecast.json?key=b53d7b780ee34c219e6164023231903'
+    var requestForecast = 'http://api.weatherapi.com/v1/forecast.json?key=b53d7b780ee34c219e6164023231903&days=7'
     var geometry = '&q=' + lat + ',' + lng
     var requestUrl = requestForecast + geometry;
 
@@ -142,7 +142,7 @@ function getWeather(lat, lng){
         })
         .then(function(data) {
             // handle the response data
-            console.log(data);
+            appendWeather(data);
         })
         .catch(function(error) {
             console.log('Error: ' + error.message);
@@ -153,6 +153,32 @@ function getWeather(lat, lng){
         });
 }
 
+function appendWeather(data) {
+    console.log(data)
+
+    var cityName = $('#city-name')
+    cityName.text(data.location.name)
+
+    var currentTemp = $('#current-temp')
+    currentTemp.text(data.current.temp_f + '\xBA')
+
+    var condition = $('#condition')
+    condition.text(data.current.condition.text)
+}
 
 renderCityList()
+
+$(document).ready(function() {
+  // ...
+  
+  // add event listener to selectable list
+  $('#selectable').on('selectableselected', function(event, ui) {
+    // get lat and lng data from selected list item
+    var lat = ui.selected.dataset.lat;
+    var lng = ui.selected.dataset.lng;
+
+    // call getWeather with lat and lng data
+    getWeather(lat, lng);
+  });
+});
 

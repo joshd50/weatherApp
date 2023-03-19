@@ -76,3 +76,13 @@ span {
     justify-content: space-between;
 }
 
+.main-card{
+    display: flex;
+    text-align: center;
+    /* justify-content: center; */
+    flex-direction: column;
+}
+
+#current-temp {
+    font-size: 50px;
+}
