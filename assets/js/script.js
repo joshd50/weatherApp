@@ -11,6 +11,7 @@ let autocomplete;
 let cities = []
 let hourlyDisplay = []
 let hourlyTime = []
+let hourlyCond = []
 
 function initAutocomplete() {
     autocomplete = new google.maps.places.Autocomplete(
@@ -156,59 +157,108 @@ function getWeather(lat, lng){
 }
 
 function appendWeather(data) {
-    console.log(data)
-
+    // console.log(data)
+// $("#hourly-forecast").empty();
     var cityName = $('#city-name')
     cityName.text(data.location.name)
 
     var currentTemp = $('#current-temp')
     currentTemp.text(data.current.temp_f + '\xBA')
-
+$("#hourly-forecast").empty();
     var condition = $('#condition')
     condition.text(data.current.condition.text)
-
-    var currentTime = $('#current-time')
+    var currentTime= ""
+    currentTime = $('#current-time')
     currentTime.text(dayjs(data.location.localtime).format('h:mm a'))
 
     var currentHour = parseInt(dayjs(data.location.localtime).format('H'));
     var hoursLeft = 23 - currentHour
     var hourTom = currentHour
-    console.log(hoursLeft + "tom" + hourTom)
 
-    console.log(data.forecast.forecastday[0].hour[currentHour].temp_f)
+    console.log(currentHour)
+    for (var i = currentHour; i <= 23; i++) {
+        var todayHourData = data.forecast.forecastday[0].hour[i].temp_f;
+        var todayMatchTime = data.forecast.forecastday[0].hour[i].time;
+        var todayMatchCond = 'https:' + data.forecast.forecastday[0].hour[i].condition.icon;
+        hourlyDisplay.push(todayHourData);
+        todayMatchTime = dayjs(todayMatchTime).format('ha')
+        hourlyTime.push(todayMatchTime)
+        hourlyCond.push(todayMatchCond)
+    }
 
-for (var i = currentHour; i <= 23; i++) {
-    var todayHourData = data.forecast.forecastday[0].hour[i].temp_f;
-    var todayMatchTime = data.forecast.forecastday[0].hour[i].time;
-    hourlyDisplay.push(todayHourData);
-    todayMatchTime = dayjs(todayMatchTime).format('ha')
-    hourlyTime.push(todayMatchTime)
-}
+    for (var x = 0; x < currentHour; x++) {
+        var tomHourData = data.forecast.forecastday[1].hour[x].temp_f
+        hourlyDisplay.push(tomHourData)
+        var tomMatchTime = data.forecast.forecastday[1].hour[x].time
+        var tomMatchCond = 'https:' + data.forecast.forecastday[1].hour[x].condition.icon;
+        tomMatchTime = dayjs(tomMatchTime).format('ha')
+        hourlyTime.push(tomMatchTime)
+        hourlyCond.push(tomMatchCond)
+    }
 
-for (var x = 0; x < currentHour; x++) {
-    var tomHourData = data.forecast.forecastday[1].hour[x].temp_f
-    hourlyDisplay.push(tomHourData)
-    var tomMatchTime = data.forecast.forecastday[1].hour[x].time
-    tomMatchTime = dayjs(tomMatchTime).format('ha')
-    hourlyTime.push(tomMatchTime)
-}
-console.log(hourlyDisplay)
-console.log(hourlyTime)
+    
+
+    // console.log(hourlyDisplay)
+    // console.log(hourlyTime)
+    // need to loop through hourly arrays
+    
+
+    for (var d = 0; d < hourlyDisplay.length; d++) {
+        var hourTime = hourlyTime[d];
+        var hourDisplay = hourlyDisplay[d];
+        var hourCond = hourlyCond[d];
+        
+        var showHourTime = $('<p>').text(hourTime)
+        var showHourCond = $('<img>').attr('src', hourCond)
+        var showHourTemp = $('<p>').text(hourDisplay)
+
+        var hourDiv = $('<div>')
+        hourDiv.append(showHourTime)
+        hourDiv.append(showHourCond)
+        hourDiv.append(showHourTemp)
+
+        $("#hourly-forecast").append(hourDiv)
+    }
+
+    $("#day-forecast").empty();
+    // 7 day forecast loop
+    for (var f = 1; f < 7; f++) {
+        var dayDate = dayjs(data.forecast.forecastday[f].date).format('ddd')
+        var dayForecastHigh = data.forecast.forecastday[f].day.maxtemp_f
+        var dayForecastLow = data.forecast.forecastday[f].day.mintemp_f
+
+        var dailyFore = $('<div>');
+        dailyFore.addClass('daily-fore');
+        var dailyForeDate = $('<p>').text(dayDate)
+        var dailyForeHigh = $('<p>').text('High: ' + dayForecastHigh + "\xBA")
+        var dailyForeLow = $('<p>').text('Low: ' + dayForecastLow + "\xBA")
+
+        var condImg = $('<img>')
+        var src1 = 'https:' + data.forecast.forecastday[f].day.condition.icon
+        condImg.attr('src', src1)
+
+        dailyFore.append(dailyForeDate)
+        dailyFore.append(condImg)
+        dailyFore.append(dailyForeHigh)
+        dailyFore.append(dailyForeLow)
+
+        $('#day-forecast').append(dailyFore)
+    }
+
 }
 
 renderCityList()
 
 $(document).ready(function() {
-  // ...
-  
-  // add event listener to selectable list
-  $('#selectable').on('selectableselected', function(event, ui) {
+
+    // add event listener to selectable list
+    $('#selectable').on('selectableselected', function(event, ui) {
     // get lat and lng data from selected list item
     var lat = ui.selected.dataset.lat;
     var lng = ui.selected.dataset.lng;
 
     // call getWeather with lat and lng data
     getWeather(lat, lng);
-  });
+    });
 });
 
