@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 let autocomplete;
 let cities = []
+let hourlyDisplay = []
+let hourlyTime = []
 
 function initAutocomplete() {
     autocomplete = new google.maps.places.Autocomplete(
@@ -168,17 +170,30 @@ function appendWeather(data) {
     var currentTime = $('#current-time')
     currentTime.text(dayjs(data.location.localtime).format('h:mm a'))
 
-    var currentHour = dayjs(data.location.localtime).format('H')
-    var hoursLeft = 24 - currentHour
+    var currentHour = parseInt(dayjs(data.location.localtime).format('H'));
+    var hoursLeft = 23 - currentHour
     var hourTom = currentHour
     console.log(hoursLeft + "tom" + hourTom)
 
     console.log(data.forecast.forecastday[0].hour[currentHour].temp_f)
 
-for (var i = currentHour; i < hoursLeft; i++) {
+for (var i = currentHour; i <= 23; i++) {
     var todayHourData = data.forecast.forecastday[0].hour[i].temp_f;
-    console.log(todayHourData);
+    var todayMatchTime = data.forecast.forecastday[0].hour[i].time;
+    hourlyDisplay.push(todayHourData);
+    todayMatchTime = dayjs(todayMatchTime).format('ha')
+    hourlyTime.push(todayMatchTime)
 }
+
+for (var x = 0; x < currentHour; x++) {
+    var tomHourData = data.forecast.forecastday[1].hour[x].temp_f
+    hourlyDisplay.push(tomHourData)
+    var tomMatchTime = data.forecast.forecastday[1].hour[x].time
+    tomMatchTime = dayjs(tomMatchTime).format('ha')
+    hourlyTime.push(tomMatchTime)
+}
+console.log(hourlyDisplay)
+console.log(hourlyTime)
 }
 
 renderCityList()
