@@ -97,11 +97,13 @@ span {
     margin: auto;
     background-color: rgb(69, 68, 68);
     border-radius: 8px ;
+    flex-shrink: 0;
 
 }
 
 #hourly-forecast div {
     margin: auto 10px;
+    
 }
 
 .daily-fore {

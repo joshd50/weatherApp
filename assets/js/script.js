@@ -1,11 +1,13 @@
 
+// Initialize the autocomplete once DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     initAutocomplete();
 }, false);
 
-  $( function() {
+// history tabs as selectable
+$( function() {
     $( "#selectable" ).selectable();
-  } );
+} );
 
 let autocomplete;
 let cities = []
@@ -13,6 +15,7 @@ let hourlyDisplay = []
 let hourlyTime = []
 let hourlyCond = []
 
+// Autocomplete function
 function initAutocomplete() {
     autocomplete = new google.maps.places.Autocomplete(
         document.getElementById('autocomplete'),
@@ -22,6 +25,7 @@ function initAutocomplete() {
         });
     autocomplete.addListener('place_changed', onPlaceChanged);
 }
+
 
 function onPlaceChanged () {
     var place = autocomplete.getPlace();
@@ -159,21 +163,28 @@ function getWeather(lat, lng){
 function appendWeather(data) {
     // console.log(data)
 // $("#hourly-forecast").empty();
+    hourlyDisplay= []
+    hourlyCond = []
+    hourTime = []
+
     var cityName = $('#city-name')
     cityName.text(data.location.name)
 
     var currentTemp = $('#current-temp')
     currentTemp.text(data.current.temp_f + '\xBA')
-$("#hourly-forecast").empty();
     var condition = $('#condition')
     condition.text(data.current.condition.text)
     var currentTime= ""
     currentTime = $('#current-time')
     currentTime.text(dayjs(data.location.localtime).format('h:mm a'))
 
-    var currentHour = parseInt(dayjs(data.location.localtime).format('H'));
+    var currentHour = ''
+
+    currentHour = parseInt(dayjs(data.location.localtime).format('H'));
+
     var hoursLeft = 23 - currentHour
     var hourTom = currentHour
+
 
     console.log(currentHour)
     for (var i = currentHour; i <= 23; i++) {
@@ -184,15 +195,19 @@ $("#hourly-forecast").empty();
         todayMatchTime = dayjs(todayMatchTime).format('ha')
         hourlyTime.push(todayMatchTime)
         hourlyCond.push(todayMatchCond)
+        console.log(todayMatchTime)
     }
 
+    
     for (var x = 0; x < currentHour; x++) {
         var tomHourData = data.forecast.forecastday[1].hour[x].temp_f
         hourlyDisplay.push(tomHourData)
+        
         var tomMatchTime = data.forecast.forecastday[1].hour[x].time
-        var tomMatchCond = 'https:' + data.forecast.forecastday[1].hour[x].condition.icon;
         tomMatchTime = dayjs(tomMatchTime).format('ha')
         hourlyTime.push(tomMatchTime)
+
+        var tomMatchCond = 'https:' + data.forecast.forecastday[1].hour[x].condition.icon;
         hourlyCond.push(tomMatchCond)
     }
 
@@ -201,7 +216,7 @@ $("#hourly-forecast").empty();
     // console.log(hourlyDisplay)
     // console.log(hourlyTime)
     // need to loop through hourly arrays
-    
+    $("#hourly-forecast").empty();
 
     for (var d = 0; d < hourlyDisplay.length; d++) {
         var hourTime = hourlyTime[d];
@@ -216,7 +231,7 @@ $("#hourly-forecast").empty();
         hourDiv.append(showHourTime)
         hourDiv.append(showHourCond)
         hourDiv.append(showHourTemp)
-
+        
         $("#hourly-forecast").append(hourDiv)
     }
 
@@ -256,6 +271,7 @@ $(document).ready(function() {
     // get lat and lng data from selected list item
     var lat = ui.selected.dataset.lat;
     var lng = ui.selected.dataset.lng;
+    
 
     // call getWeather with lat and lng data
     getWeather(lat, lng);
