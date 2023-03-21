@@ -103,6 +103,10 @@ function renderCityList(){
             newCity.attr("data-lat", city.geometry.lat);
             newCity.data("lng", city.geometry.lng);
             newCity.attr("data-lng", city.geometry.lng);
+            newCity.onclick(function(){
+                $('#title').scrollIntoView({behavior: 'smooth'});
+            });
+
 
             closeButton = $('<button>')
             closeButton.attr("type", "button");
@@ -202,7 +206,7 @@ function appendWeather(data) {
     for (var x = 0; x < currentHour; x++) {
         var tomHourData = data.forecast.forecastday[1].hour[x].temp_f
         hourlyDisplay.push(tomHourData)
-        
+
         var tomMatchTime = data.forecast.forecastday[1].hour[x].time
         tomMatchTime = dayjs(tomMatchTime).format('ha')
         hourlyTime.push(tomMatchTime)
