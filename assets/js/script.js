@@ -103,9 +103,9 @@ function renderCityList(){
             newCity.attr("data-lat", city.geometry.lat);
             newCity.data("lng", city.geometry.lng);
             newCity.attr("data-lng", city.geometry.lng);
-            newCity.onclick(function(){
-                $('#title').scrollIntoView({behavior: 'smooth'});
-            });
+newCity.click(function() {
+  $('#title')[0].scrollIntoView({ behavior: 'smooth' });
+});
 
 
             closeButton = $('<button>')
