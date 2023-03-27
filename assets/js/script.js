@@ -3,6 +3,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     initAutocomplete();
 }, false);
+// google.maps.event.addDomListener(window, 'load', initAutocomplete);
 
 // history tabs as selectable
 $( function() {
@@ -41,6 +42,8 @@ function onPlaceChanged () {
         var name = place.name;
         var state = '';
         var country = '';
+
+        getWeather(lat, lng)
 
         // loop through the address components to find the state and country
         for (var i = 0; i < place.address_components.length; i++) {
@@ -153,6 +156,7 @@ function getWeather(lat, lng){
         })
         .then(function(data) {
             // handle the response data
+            console.log(data)
             appendWeather(data);
         })
         .catch(function(error) {
@@ -169,7 +173,7 @@ function appendWeather(data) {
 // $("#hourly-forecast").empty();
     hourlyDisplay= []
     hourlyCond = []
-    hourTime = []
+    hourlyTime = []
 
     var cityName = $('#city-name')
     cityName.text(data.location.name)
@@ -191,6 +195,7 @@ function appendWeather(data) {
 
 
     console.log(currentHour)
+
     for (var i = currentHour; i <= 23; i++) {
         var todayHourData = data.forecast.forecastday[0].hour[i].temp_f;
         var todayMatchTime = data.forecast.forecastday[0].hour[i].time;
@@ -199,7 +204,7 @@ function appendWeather(data) {
         todayMatchTime = dayjs(todayMatchTime).format('ha')
         hourlyTime.push(todayMatchTime)
         hourlyCond.push(todayMatchCond)
-        console.log(todayMatchTime)
+        console.log(hourlyTime)
     }
 
     
