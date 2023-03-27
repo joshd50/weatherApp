@@ -103,9 +103,9 @@ function renderCityList(){
             newCity.attr("data-lat", city.geometry.lat);
             newCity.data("lng", city.geometry.lng);
             newCity.attr("data-lng", city.geometry.lng);
-newCity.click(function() {
-  $('#title')[0].scrollIntoView({ behavior: 'smooth' });
-});
+            newCity.click(function() {
+                $('#title')[0].scrollIntoView({ behavior: 'smooth' });
+            });
 
 
             closeButton = $('<button>')
@@ -139,7 +139,7 @@ newCity.click(function() {
 }
 
 function getWeather(lat, lng){
-    var requestForecast = 'http://api.weatherapi.com/v1/forecast.json?key=b53d7b780ee34c219e6164023231903&days=7'
+    var requestForecast = 'https://api.weatherapi.com/v1/forecast.json?key=b53d7b780ee34c219e6164023231903&days=7'
     var geometry = '&q=' + lat + ',' + lng
     var requestUrl = requestForecast + geometry;
 
