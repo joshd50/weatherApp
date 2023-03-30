@@ -29,15 +29,15 @@ To use thise site:
 
 Navigate on the homepage to the black search box that says 'Enter a city'. Please enter the city you would like to view the weather details
 
-![alt text](assets/images/screenshot.png)
+![Step 1](./assets/images/step1.png)
 
 The site will be notified when you start typing and google autocomplete will initiate to help you find the ciity you are looking for. Nice! Once you see the city you desire, please click on its name.
 
-![alt text](assets/images/screenshot.png)
+![Step 2](./assets/images/step2.png)
 
 Once selected, the weather for your chosen city will appear in detail. You will also notice a past history list under the search bar. This will make it easier for you to see your frequented cities next time you log on! If you do not want a city in your past history, just click on the X in the box and Voila!
 
-![alt text](assets/images/screenshot.png)
+![Step 3](./assets/images/step3.png)
 
 
 ## Credits
