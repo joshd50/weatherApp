@@ -56,6 +56,7 @@ function onPlaceChanged () {
             }
 
         }
+        // stylize the city data for button display
         if (country == "United States") {
             country = "USA";
             state = ", " + state + ", ";
@@ -65,9 +66,6 @@ function onPlaceChanged () {
             name = name.trim()
             country = " " + country
         }
-        console.log(lat, lng);
-        // 34.0522342 -118.2436849
-        console.log(name, state, country);
 
         var city = {
             location: {
@@ -95,7 +93,6 @@ function renderCityList(){
     // retrieve the cities array from local storage
     cities = JSON.parse(localStorage.getItem('cities')) || [];
         if (cities !== null) {
-            console.log(cities.length)
         // loop through the cities array and create an li for each city
         for (var i = 0; i < cities.length; i++) {
             var city = cities[i];
@@ -156,46 +153,38 @@ function getWeather(lat, lng){
         })
         .then(function(data) {
             // handle the response data
-            console.log(data)
             appendWeather(data);
         })
         .catch(function(error) {
             console.log('Error: ' + error.message);
         })
-        .finally(function() {
-            // re-render the city list after the weather data has been retrieved
-            // renderCityList();
-        });
 }
 
+// enters data into main card
 function appendWeather(data) {
-    // console.log(data)
-// $("#hourly-forecast").empty();
     hourlyDisplay= []
     hourlyCond = []
     hourlyTime = []
 
+    // display city name
     var cityName = $('#city-name')
     cityName.text(data.location.name)
 
+    // display temp
     var currentTemp = $('#current-temp')
     currentTemp.text(data.current.temp_f + '\xBA')
     var condition = $('#condition')
     condition.text(data.current.condition.text)
+    // display location time
     var currentTime= ""
     currentTime = $('#current-time')
     currentTime.text(dayjs(data.location.localtime).format('h:mm a'))
 
+    // set current time to location selected
     var currentHour = ''
-
     currentHour = parseInt(dayjs(data.location.localtime).format('H'));
 
-    var hoursLeft = 23 - currentHour
-    var hourTom = currentHour
-
-
-    console.log(currentHour)
-
+    // get the remaining hours of today
     for (var i = currentHour; i <= 23; i++) {
         var todayHourData = data.forecast.forecastday[0].hour[i].temp_f;
         var todayMatchTime = data.forecast.forecastday[0].hour[i].time;
@@ -204,10 +193,8 @@ function appendWeather(data) {
         todayMatchTime = dayjs(todayMatchTime).format('ha')
         hourlyTime.push(todayMatchTime)
         hourlyCond.push(todayMatchCond)
-        console.log(hourlyTime)
     }
-
-    
+    // get the reamining hours from tomorrow to complete 24 hour forecast
     for (var x = 0; x < currentHour; x++) {
         var tomHourData = data.forecast.forecastday[1].hour[x].temp_f
         hourlyDisplay.push(tomHourData)
@@ -220,11 +207,7 @@ function appendWeather(data) {
         hourlyCond.push(tomMatchCond)
     }
 
-    
-
-    // console.log(hourlyDisplay)
-    // console.log(hourlyTime)
-    // need to loop through hourly arrays
+    // loop through hourly arrays
     $("#hourly-forecast").empty();
 
     for (var d = 0; d < hourlyDisplay.length; d++) {
@@ -232,15 +215,17 @@ function appendWeather(data) {
         var hourDisplay = hourlyDisplay[d];
         var hourCond = hourlyCond[d];
         
+        // create hourly HTML
         var showHourTime = $('<p>').text(hourTime)
         var showHourCond = $('<img>').attr('src', hourCond)
         var showHourTemp = $('<p>').text(hourDisplay)
 
+        // append hourly data
         var hourDiv = $('<div>')
         hourDiv.append(showHourTime)
         hourDiv.append(showHourCond)
         hourDiv.append(showHourTemp)
-        
+        // add hourly to hour div
         $("#hourly-forecast").append(hourDiv)
     }
 
