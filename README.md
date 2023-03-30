@@ -44,9 +44,9 @@ Once selected, the weather for your chosen city will appear in detail. You will 
 
 Many thanks to the staff and students of the 2023 Q2 Full Stack Coding Bootcamp.
 
-![Google maps place autocomplete API documentation](https://developers.google.com/maps/documentation/javascript/place-autocomplete)
+[Google maps place autocomplete API documentation](https://developers.google.com/maps/documentation/javascript/place-autocomplete)
 
-![Weather API Docs](https://www.weatherapi.com/docs/)
+[Weather API Docs](https://www.weatherapi.com/docs/)
 
 
 ## License
